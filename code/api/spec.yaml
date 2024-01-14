@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: Swagger Bitwarden Secrets Manager - OpenAPI 3.0
+  description: >-
+    This is a Bitwarden Secrets Manager CLI Wrapper Server based on the OpenAPI 3.0
+    specification. You can find out more about Bitwarden Secrets Manager [here](https://bitwarden.com/products/secrets-manager/). 
+  contact:
+    email: code@bojan.io
+  license:
+    name: GNU AGPL v3
+    url: https://www.gnu.org/licenses/agpl-3.0.en.html#license-text
+  version: v1.0
+externalDocs:
+  description: Bitwarden Secrets Manager CLI Docs
+  url: https://bitwarden.com/help/secrets-manager-cli/
+servers:
+  - url: /
+paths:
+  '/secret/{id}':
+    get:
+      summary: Find Secret by ID
+      description: Returns a single secret
+      operationId: getById
+      parameters:
+        - name: id
+          in: path
+          description: ID of secret to return
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Secret'  # Reference a common schema
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Secret not found
+      x-swagger-router-controller: secretController
+
+components:
+  schemas:
+    Secret:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizationId:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        key:
+          type: string
+        value:
+          type: string
+        note: 
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        revisionDate:
+          type: string
+          format: date-time
+      example:  # Example specific to secrets
+        organizationId: ffeeddcc-cccc-bbbb-aaaa-b0b300fa2aaa
+        id: aaabbbcc-dddd-eeee-ffff-b0f600e0af3f
+        projectId: aaaabbbb-cccc-dddd-eeee-000011112222
+        value: Bitwarden Secrets Manager
+        key: name
+        note: This secret represents the name of the secrets manager product in use
+        creationDate: 2024-01-13T13:38:03.078879200Z
+        revisionDate: 2024-01-14T17:59:13.548055Z
