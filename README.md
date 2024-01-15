@@ -11,13 +11,13 @@ Since Bitwarden introduced Secrets Manager with a much simpler object schema and
 You will need a working Kubernetes cluster with External Secrets Operator (ESO) up and running and a Bitwarden account. 
 
 1. Clone this repository
-2. Build and push a custom container image for the Bitwarden Secrets Manager Server (Optional; you may use the default image `bojanraic/bwsm-cli:v1.0`)
+2. Build and push a custom container image for the Bitwarden Secrets Manager Server (Optional; you may use the default image `bojanraic/bwsm-eso:latest`)
 3. Create a Bitwarden organization and activate Secrets Manager, if not already done
 4. Create a Secrets Manager project, a service account with read permissions for the project, and an access token for the service account
 5. Update `bws-token.yaml` with the base64 value of the token from Step 4
 6. Deploy the Bitwarden Secrets Manager Server using `bws-deploy.yaml`. 
    Update it if using your own container image from Step 2
-7. Optionally, harden the Network Policy in `bws-deploy.yaml`, to further restrict communication to `bwsm-cli` only from ESO Pods. 
+7. Optionally, harden the Network Policy in `bws-deploy.yaml`, to further restrict communication to `bwsm-eso` only from ESO Pods. 
    The CLI Wrapper Server has no authentication. The provided Network Policy allows traffic from ESO namespace. This can be further locked down if desired. 
 8. Create a Cluster Secret Store using `bws-cluster-secret-store.yaml`.
    Make sure the store is `Valid` and `Ready` before proceeding

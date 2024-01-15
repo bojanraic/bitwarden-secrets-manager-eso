@@ -1,34 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bwsm-cli
+  name: bwsm-eso
   namespace: bitwarden
   labels:
-    app.kubernetes.io/instance: bwsm-cli
-    app.kubernetes.io/name: bwsm-cli
+    app.kubernetes.io/instance: bwsm-eso
+    app.kubernetes.io/name: bwsm-eso
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: bwsm-cli
-      app.kubernetes.io/instance: bwsm-cli
+      app.kubernetes.io/name: bwsm-eso
+      app.kubernetes.io/instance: bwsm-eso
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: bwsm-cli
-        app.kubernetes.io/instance: bwsm-cli
+        app.kubernetes.io/name: bwsm-eso
+        app.kubernetes.io/instance: bwsm-eso
     spec:
       containers:
-        - name: bwsm-cli
-          image: bojanraic/bwsm-cli:v1.0
+        - name: bwsm-eso
+          image: bojanraic/bwsm-eso:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: BWS_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: bwsm-cli-secret
+                  name: bwsm-eso-secret
                   key: BWS_ACCESS_TOKEN
           ports:
             - name: http
@@ -62,11 +62,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bwsm-cli
+  name: bwsm-eso
   namespace: bitwarden
   labels:
-    app.kubernetes.io/instance: bwsm-cli
-    app.kubernetes.io/name: bwsm-cli
+    app.kubernetes.io/instance: bwsm-eso
+    app.kubernetes.io/name: bwsm-eso
   annotations:
 spec:
   type: ClusterIP
@@ -76,8 +76,8 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app.kubernetes.io/name: bwsm-cli
-    app.kubernetes.io/instance: bwsm-cli
+    app.kubernetes.io/name: bwsm-eso
+    app.kubernetes.io/instance: bwsm-eso
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -87,8 +87,8 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/instance: bwsm-cli
-      app.kubernetes.io/name: bwsm-cli
+      app.kubernetes.io/instance: bwsm-eso
+      app.kubernetes.io/name: bwsm-eso
   ingress:
   - from:
     - namespaceSelector:

@@ -3,6 +3,6 @@ data:
   BWS_ACCESS_TOKEN: <BITWARDEN SECRETS MANAGER SERVICE ACCOUNT ACCESS TOKEN>
 kind: Secret
 metadata:
-  name: bwsm-cli-secret
+  name: bwsm-eso-secret
   namespace: bitwarden
 type: Opaque
