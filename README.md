@@ -1,10 +1,13 @@
-## Bitwarden Secrets Manager CLI Wrapper Server for ESO
+## Bitwarden Secrets Manager CLI Wrapper for ESO
 
-A simple Express.js wrapper around Bitwarden Secrets Manager CLI ([BWS](https://bitwarden.com/help/secrets-manager-cli/)). 
+A simple Express.js server wrapper around Bitwarden Secrets Manager CLI ([BWS](https://bitwarden.com/help/secrets-manager-cli/)). 
 Used to retrieve values for `secret` entries, given a specific `id`. 
-Meant to be used with External Secrets Operator ([ESO](https://external-secrets.io/latest/)) and webhook provider as an alternative to using Bitwarden directly. 
-Bitwarden usage with ESO means one would need to use different types of Bitwarden entries, depending on the data to be stored: `login`, `note`, or `fields`. 
-Since Bitwarden introduced Secrets Manager with a much simpler object schema and a free plan, this is an attempt to make a webhook-compatible wrapper around its CLI so it can be used with ESO in a similar fashion. You can find out more about Bitwarden Secrets Manager [here](https://bitwarden.com/products/secrets-manager/). 
+
+It is meant to be used with External Secrets Operator ([ESO](https://external-secrets.io/latest/)) and its webhook provider as an alternative to using Bitwarden (password manager) via ESO webhook provider. 
+
+When using Bitwarden with ESO, it is required to use and specify different types of Bitwarden entries, depending on the data to be stored: `login`, `note`, or `fields`. 
+
+Since Bitwarden introduced Secrets Manager with a much simpler key/value-based schema, this is an attempt to make a webhook-compatible wrapper around its CLI so it can be used with ESO and the webhook provider in a [similar manner](https://external-secrets.io/latest/examples/bitwarden/) to Bitwarden itself. You can find out more about Bitwarden Secrets Manager [here](https://bitwarden.com/products/secrets-manager/). 
 
 ## Usage
 
