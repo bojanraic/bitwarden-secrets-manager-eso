@@ -1,13 +1,9 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: bitwarden
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bwsm-eso
-  namespace: bitwarden
+  namespace: bwsm
   labels:
     app.kubernetes.io/instance: bwsm-eso
     app.kubernetes.io/name: bwsm-eso
@@ -39,6 +35,13 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          resources: 
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
           livenessProbe:
             exec:
               command:
@@ -48,19 +51,19 @@ spec:
             initialDelaySeconds: 10
             failureThreshold: 3
             timeoutSeconds: 1
-            periodSeconds: 10
+            periodSeconds: 5
           readinessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 10
             failureThreshold: 3
             timeoutSeconds: 1
-            periodSeconds: 10
+            periodSeconds: 5
           startupProbe:
             tcpSocket:
               port: 8080
             initialDelaySeconds: 10
-            failureThreshold: 30
+            failureThreshold: 3
             timeoutSeconds: 1
             periodSeconds: 5
 ---
@@ -68,11 +71,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: bwsm-eso
-  namespace: bitwarden
+  namespace: bwsm
   labels:
     app.kubernetes.io/instance: bwsm-eso
     app.kubernetes.io/name: bwsm-eso
-  annotations:
+  annotations: {}
 spec:
   type: ClusterIP
   ports:
@@ -88,7 +91,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: eso-ns-2-bw-pods-policy
-  namespace: bitwarden
+  namespace: bwsm
 spec:
   podSelector:
     matchLabels:
