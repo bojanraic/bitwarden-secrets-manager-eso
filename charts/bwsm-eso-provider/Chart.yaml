@@ -6,7 +6,7 @@ version: 0.0.1
 
 # renovate: image=bojanraic/bwsm-eso
 appVersion: "0.0.1"
-
+icon: https://bojanraic.github.io/bitwarden-secrets-manager-eso/chart-icon.png
 maintainers:
   - name: "Bojan Raic"
     email: "code@bojan.io"

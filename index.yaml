@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  bwsm-eso-provider:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2024-01-20T08:32:39.861856786Z"
+    description: Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider
+      for External Secrets Operator (ESO)
+    digest: 373d15d6589def8b1bea7653b458d8fcfc0f57df0d70027982a6712ec9fb141d
+    maintainers:
+    - email: code@bojan.io
+      name: bojanraic
+      url: https://github.com/bojanraic
+    name: bwsm-eso-provider
+    type: application
+    urls:
+    - https://github.com/bojanraic/bitwarden-secrets-manager-eso/releases/download/bwsm-eso-provider-0.0.1/bwsm-eso-provider-0.0.1.tgz
+    version: 0.0.1
+generated: "2024-01-20T08:32:39.861863409Z"
