@@ -1,0 +1,11 @@
+# Artifact Hub repository metadata file
+#
+
+repositoryID: 705f4cae-b796-4078-a4ff-c9acc9d5948a
+owners: 
+  - name: Bojan Raic
+    email: code@bojan.io
+
+ignore: # (optional, packages that should not be indexed by Artifact Hub)
+  - name: bwsm-eso-provider # Exact match
+    version: beta* # Regular expression (when omitted, all versions are ignored)
