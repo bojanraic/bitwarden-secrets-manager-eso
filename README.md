@@ -44,7 +44,7 @@ To use the BWSM ESO provider with Helm, you can first add the Helm repo, and the
 helm repo add bwsm-eso-provider https://bojanraic.github.io/bwsm-eso-provider
 
 # install the BWSM-ESO provider Helm release via the CLI
-helm install bwsm bwsm-eso_provider/bwsm-eso-provider \
+helm install bwsm bwsm-eso-provider/bwsm-eso-provider \
   --set <variable>=<value> ...
 
 # install the BWSM-ESO provider Helm release using a modified values.yaml file
