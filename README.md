@@ -1,4 +1,5 @@
 ## Bitwarden Secrets Manager (BWSM) Provider for External Secrets Operator (ESO)
+<a href="https://github.com/bojanraic/bitwarden-secrets-manager-eso/releases"><img src="https://img.shields.io/github/v/release/bojanraic/bitwarden-secrets-manager-eso"></a>
 
 A simple Express.js server wrapper around Bitwarden Secrets Manager CLI ([BWS](https://bitwarden.com/help/secrets-manager-cli/)). 
 Used to retrieve values for `secret` entries, given a specific `id`. 
@@ -37,6 +38,10 @@ This project can be used in 2 ways, by applying Kubernetes manifests directly, o
     The secret should be created and contain the data from the referenced Bitwarden Secrets Manager secret.
 
 ### Usage with Helm
+
+The wrapper is packaged as a Helm chart and is published on ArtifactHub. 
+
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/bitwarden-secrets-manager-eso)](https://artifacthub.io/packages/search?repo=bitwarden-secrets-manager-eso)
 
 To use the BWSM ESO provider with Helm, you can first add the Helm repo, and then install the release.
 1. Add repository: 
