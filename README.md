@@ -54,3 +54,9 @@ helm install bwsm bwsm-eso-provider/bwsm-eso-provider -f /<path-to-your>/values.
 ```
 
 See the provided Helm chart's [documentation](https://bojanraic.github.io/bitwarden-secrets-manager-eso/charts/bwsm-eso-provider/) or view the [README](./charts/bwsm-eso-provider/README.md) and default [`values.yaml`](./charts/bwsm-eso-provider/values.yaml) directly for all the details. 
+
+## Contributors
+
+<!-- readme: contributors -start -->
+
+<!-- readme: contributors -end -->
