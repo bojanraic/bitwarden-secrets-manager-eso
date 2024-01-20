@@ -20,6 +20,14 @@ jobs:
     environment: 'dockerhub'
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Step
+        run: | 
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo "Ref: ${{ github.ref }}"
+          echo "Event name: ${{ github.event_name }}"
+          echo "Event ref: ${{ github.event.ref }}"
+
       - name: Code Checkout
         uses: actions/checkout@v4
 
@@ -33,7 +41,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Manual Build/Push
-        if: ${{ github.event == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: docker/build-push-action@v5
         with:
           push: true
