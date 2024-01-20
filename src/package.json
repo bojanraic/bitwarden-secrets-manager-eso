@@ -1,6 +1,6 @@
 {
     "name": "bwsm-eso",
-    "version": "0.1",
+    "version": "0.0.2",
     "description": "This is a Bitwarden Secrets Manager ESO wrapper based on the OpenAPI 3.0 specification.",
     "license": "Apache 2.0",
     "type": "module",
@@ -13,7 +13,8 @@
     "scripts": {
         "prestart": "npm install --only=prod",
         "start": "node index.js",
-        "build": "docker build . -t bojanraic/bwsm-eso:latest"
+        "build-docker": "docker build --no-cache . -t bojanraic/bwsm-eso:latest", 
+        "start-docker": "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN docker run --rm -e BWS_ACCESS_TOKEN -p 8080:8080 bojanraic/bwsm-eso:latest"
     },
     "dependencies": {
         "@oas-tools/core": "^3.1.0",

@@ -1,22 +1,42 @@
-FROM node:slim
+ARG BWS_VERSION=0.4.0 \
+    NODE_ENV=production \
+    PORT=8080 \
+    WORKDIR=/opt/app
 
-ARG BWS_VERSION=0.4.0 
-ARG NODE_ENV=production 
-ARG PORT=8080
+FROM node:alpine as base
+ARG WORKDIR
+WORKDIR $WORKDIR
+COPY . .
+ENV NODE_ENV=$NODE_ENV \
+    PORT=$PORT \
+    BWS_ACCESS_TOKEN= 
+RUN npm ci && \
+    rm -rf node_modules/*/test && \
+    rm -rf node_modules/*/tests && \
+    rm -rf node_modules/.bin
 
-WORKDIR /opt/app
+FROM busybox:stable-uclibc as bws
+
+ARG BWS_VERSION WORKDIR 
+WORKDIR $WORKDIR
 
 ADD https://github.com/bitwarden/sdk/releases/download/bws-v${BWS_VERSION}/bws-x86_64-unknown-linux-gnu-${BWS_VERSION}.zip /tmp/bws.zip
+RUN unzip /tmp/bws.zip -d . && rm -rf /tmp/* && chmod +x ./bws
 
-COPY . .
+FROM gcr.io/distroless/nodejs18-debian12 as runner 
+ARG WORKDIR NODE_ENV PORT
+ENV WORKDIR=$WORKDIR \
+    BWS_CLI_PATH=$WORKDIR/bws \
+    NODE_ENV=$NODE_ENV \
+    PORT=$PORT
 
-RUN apt update && apt install -y unzip ca-certificates && unzip /tmp/bws.zip -d /usr/local/bin && rm -rf /tmp/* && \
-    chmod +x /usr/local/bin && apt purge -y unzip && apt clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    npm install --only=prod
+WORKDIR $WORKDIR
 
-ENV NODE_ENV=$NODE_ENV PORT=$PORT BWS_ACCESS_TOKEN= 
+COPY --from=base $WORKDIR/ $WORKDIR/
+COPY --from=bws /bin/sh /bin/sh
+COPY --from=bws $WORKDIR/bws $WORKDIR/bws
 
 EXPOSE $PORT
+USER nonroot
 
-CMD [ "node", "index.js" ]
+CMD [ "index.js" ]
