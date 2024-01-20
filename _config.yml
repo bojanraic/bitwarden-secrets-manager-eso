@@ -9,6 +9,7 @@ exclude:
   - .gitattributes
   - .gitignore
   - .pre-commit-config.yaml
+  - k8s-manifests/
   - src/
   - renovate.json
   - LICENSE
