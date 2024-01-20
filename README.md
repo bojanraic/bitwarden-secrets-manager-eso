@@ -58,5 +58,14 @@ See the provided Helm chart's [documentation](https://bojanraic.github.io/bitwar
 ## Contributors
 
 <!-- readme: contributors -start -->
-
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/bojanraic">
+            <img src="https://avatars.githubusercontent.com/u/2068166?v=4" width="100;" alt="bojanraic"/>
+            <br />
+            <sub><b>Bojan Raic</b></sub>
+        </a>
+    </td></tr>
+</table>
 <!-- readme: contributors -end -->
