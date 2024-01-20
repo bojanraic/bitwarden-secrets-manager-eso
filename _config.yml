@@ -1,0 +1,14 @@
+include:
+  - README.md
+  - charts/**/README.md
+  - chart-icon.png
+  - artifacthub-repo.yml
+  - index.yaml
+exclude:
+  - .github/
+  - .gitattributes
+  - .gitignore
+  - .pre-commit-config.yaml
+  - src/
+  - renovate.json
+  - LICENSE
