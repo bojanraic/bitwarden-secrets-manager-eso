@@ -1,4 +1,0 @@
-include:
-  - charts/
-  - artifacthub-repo.yml
-  - README.md
