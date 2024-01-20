@@ -39,15 +39,13 @@ This project can be used in 2 ways, by applying Kubernetes manifests directly, o
 ### Usage with Helm
 
 To use the BWSM ESO provider with Helm, you can first add the Helm repo, and then install the release.
-```bash
-# add the project's helm repository locally
-helm repo add bwsm-eso-provider https://bojanraic.github.io/bwsm-eso-provider
-
-# install the BWSM-ESO provider Helm release via the CLI
-helm install bwsm bwsm-eso-provider/bwsm-eso-provider \
-  --set <variable>=<value> ...
-
-# install the BWSM-ESO provider Helm release using a modified values.yaml file
-helm upgrade --install bwsm bwsm-eso-provider/bwsm-eso-provider --values values.yaml -n bwsm --create-namespace
+1. Add repository: 
+```bash 
+helm repo add bwsm-eso-provider https://bojanraic.github.io/bitwarden-secrets-manager-eso
 ```
-See the provided Helm chart's [README](./charts/bwsm-eso-provider/README.md) and default [`values.yaml`](./charts/bwsm-eso-provider/values.yaml) for all the details. 
+2. Install: 
+```bash
+helm install bwsm bwsm-eso-provider/bwsm-eso-provider -f /<path-to-your>/values.yaml --create-namespace -n bwsm
+```
+
+See the provided Helm chart's [documentation](https://bojanraic.github.io/bitwarden-secrets-manager-eso/charts/bwsm-eso-provider/) or view the [README](./charts/bwsm-eso-provider/README.md) and default [`values.yaml`](./charts/bwsm-eso-provider/values.yaml) directly for all the details. 

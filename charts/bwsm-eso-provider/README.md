@@ -4,13 +4,11 @@
 
 Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider for External Secrets Operator (ESO)
 
-Uses a simple Express.JS wrapper around Bitwarden Secrets Manager CLI ([BWS](https://bitwarden.com/help/secrets-manager-cli/)) to provide an implemetation compatible with ESO's webhook provider. You can find the Express.JS app source code [here](https://github.com/bojanraic/bitwarden-secrets-manager-eso/tree/main/src).
-
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| bojanraic | <code@bojan.io> | <https://github.com/bojanraic> |
+| Bojan Raic | <code@bojan.io> | <https://github.com/bojanraic> |
 
 ## Values
 
