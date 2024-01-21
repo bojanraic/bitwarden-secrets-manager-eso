@@ -54,3 +54,10 @@ jobs:
           tags: |
             bojanraic/bwsm-eso:${{ github.ref_name }}
             bojanraic/bwsm-eso:latest
+
+      - name: Tagged Release
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
+          name: v${{ github.ref_name }}

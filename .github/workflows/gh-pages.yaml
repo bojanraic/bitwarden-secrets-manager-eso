@@ -2,7 +2,14 @@ name: Deploy GH Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: 
+      - main
+    paths:
+      - README.md
+      - charts/**/README.md
+      - chart-icon.png
+      - artifacthub-repo.yml
+      - index.yaml
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
