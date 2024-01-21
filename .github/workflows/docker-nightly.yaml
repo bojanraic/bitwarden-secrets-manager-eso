@@ -1,7 +1,6 @@
 name: Docker Nightly Builds
 
 on:
-  workflow_dispatch:
   schedule:
     # 03.15 AM UTC
     - cron: '15 3 * * *'
@@ -23,7 +22,7 @@ jobs:
       - name: Docker Buildx Setup
         uses: docker/setup-buildx-action@v3
 
-      - name: Nighhly Build/Push
+      - name: Nighhly Build/Push From Default Branch
         uses: docker/build-push-action@v5
         with:
           push: true
@@ -52,3 +51,4 @@ jobs:
           context: src
           tags: |
             bojanraic/bwsm-eso:${{ steps.most-recent-tag.outputs.tag }}
+            bojanraic/bwsm-eso:latest
