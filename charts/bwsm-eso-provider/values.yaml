@@ -2,7 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# -- bwsm_eso_provider: BWSM-ESO-specific settings
 bwsm_eso_provider:
   # -- if set to True, we'll create a cluster-wide Cluster Secret Store
   # see: https://external-secrets.io/latest/introduction/overview/#clustersecretstore
@@ -94,25 +93,34 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# -- The livenessProbe 
 livenessProbe:
+  # -- liveness probe initial delay
   initialDelaySeconds: 15
+  # -- liveness probe failure threshold
   failureThreshold: 3
+  # -- liveness probe timeout 
   timeoutSeconds: 1
+  # -- liveness probe period
   periodSeconds: 10
 
-# -- The readinessProbe 
 readinessProbe:
+  # -- readiness probe initial delay
   initialDelaySeconds: 15
+  # -- readiness probe failure threshold
   failureThreshold: 3
+  # -- readiness probe timeout 
   timeoutSeconds: 1
+  # -- readiness probe period 
   periodSeconds: 10
 
-# -- The startupProbe 
 startupProbe:
+  # -- readiness probe initial delay
   initialDelaySeconds: 15
+  # -- readiness probe failure threshold
   failureThreshold: 3
+  # -- readiness probe timeout 
   timeoutSeconds: 1
+  # -- readiness Probe period 
   periodSeconds: 10
 
 autoscaling:
