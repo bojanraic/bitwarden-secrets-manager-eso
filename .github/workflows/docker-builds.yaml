@@ -19,6 +19,8 @@ jobs:
   docker-image-build:
     environment: 'dockerhub'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4

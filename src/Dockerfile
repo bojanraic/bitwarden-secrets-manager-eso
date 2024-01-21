@@ -1,9 +1,9 @@
 ARG BWS_VERSION=0.4.0 \
     NODE_ENV=production \
     PORT=8080 \
-    WORKDIR=/opt/app
+    WORKDIR=/app
 
-FROM node:alpine as base
+FROM cgr.dev/chainguard/node-lts as base
 ARG WORKDIR
 WORKDIR $WORKDIR
 COPY . .
@@ -23,7 +23,7 @@ WORKDIR $WORKDIR
 ADD https://github.com/bitwarden/sdk/releases/download/bws-v${BWS_VERSION}/bws-x86_64-unknown-linux-gnu-${BWS_VERSION}.zip /tmp/bws.zip
 RUN unzip /tmp/bws.zip -d . && rm -rf /tmp/* && chmod +x ./bws
 
-FROM gcr.io/distroless/nodejs18-debian12 as runner 
+FROM cgr.dev/chainguard/node-lts as runner 
 ARG WORKDIR NODE_ENV PORT
 ENV WORKDIR=$WORKDIR \
     BWS_CLI_PATH=$WORKDIR/bws \
@@ -37,6 +37,6 @@ COPY --from=bws /bin/sh /bin/sh
 COPY --from=bws $WORKDIR/bws $WORKDIR/bws
 
 EXPOSE $PORT
-USER nonroot
+USER node
 
 CMD [ "index.js" ]
