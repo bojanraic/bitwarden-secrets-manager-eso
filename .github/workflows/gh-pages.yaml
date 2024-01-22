@@ -1,9 +1,8 @@
 name: Deploy GH Pages
 
 on:
-  push:
-    branches: 
-      - main
+  release:
+    types: [published]
     paths:
       - README.md
       - charts/**/README.md
