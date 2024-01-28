@@ -1,5 +1,5 @@
 ARG BWS_VERSION=0.4.0 \
-    BWS_DL_ARCH=x86_64
+    BWS_DL_ARCH=x86_64 \
     NODE_ENV=production \
     PORT=8080 \
     WORKDIR=/app
