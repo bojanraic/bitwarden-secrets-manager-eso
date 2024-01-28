@@ -1,4 +1,5 @@
 ARG BWS_VERSION=0.4.0 \
+    BWS_DL_ARCH=x86_64
     NODE_ENV=production \
     PORT=8080 \
     WORKDIR=/app
@@ -20,7 +21,7 @@ FROM busybox:stable-uclibc as bws
 ARG BWS_VERSION WORKDIR 
 WORKDIR $WORKDIR
 
-ADD https://github.com/bitwarden/sdk/releases/download/bws-v${BWS_VERSION}/bws-x86_64-unknown-linux-gnu-${BWS_VERSION}.zip /tmp/bws.zip
+ADD https://github.com/bitwarden/sdk/releases/download/bws-v${BWS_VERSION}/bws-${BWS_DL_ARCH}-unknown-linux-gnu-${BWS_VERSION}.zip /tmp/bws.zip
 RUN unzip /tmp/bws.zip -d . && rm -rf /tmp/* && chmod +x ./bws
 
 FROM cgr.dev/chainguard/node-lts as runner 
