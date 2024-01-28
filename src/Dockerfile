@@ -5,7 +5,7 @@ ARG BWS_VERSION=0.4.0 \
     WORKDIR=/app
 
 FROM cgr.dev/chainguard/node-lts as base
-ARG WORKDIR
+ARG WORKDIR BWS_DL_ARCH
 WORKDIR $WORKDIR
 COPY . .
 ENV NODE_ENV=$NODE_ENV \
@@ -18,7 +18,7 @@ RUN npm ci && \
 
 FROM busybox:stable-uclibc as bws
 
-ARG BWS_VERSION WORKDIR 
+ARG BWS_VERSION WORKDIR BWS_DL_ARCH
 WORKDIR $WORKDIR
 
 ADD https://github.com/bitwarden/sdk/releases/download/bws-v${BWS_VERSION}/bws-${BWS_DL_ARCH}-unknown-linux-gnu-${BWS_VERSION}.zip /tmp/bws.zip
