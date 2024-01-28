@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          platforms: linux/${{ matrix.platform }}
+          platforms: linux/amd64, linux/arm64
           context: src
           build-args: |
             BWS_DL_ARCH=${{ env.BWS_DL_ARCH }}
@@ -57,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          platforms: linux/${{ matrix.platform }}
+          platforms: linux/amd64, linux/arm64
           context: src
           build-args: |
             BWS_DL_ARCH=${{ env.BWS_DL_ARCH }}
