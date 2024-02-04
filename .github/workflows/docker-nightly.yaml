@@ -32,7 +32,6 @@ jobs:
       - name: Architecture specific Environment Variable Setup
         run: |
           echo "BWS_DL_ARCH=$(if [ '${{ matrix.platform }}' == 'amd64' ]; then echo 'x86_64'; else echo 'aarch64'; fi)" >> $GITHUB_ENV
-          echo "ARCH=${{ matrix.platform }}" >> $GITHUB_ENV
 
       - name: Nighhly Build/Push From Default Branch
         uses: docker/build-push-action@v5
@@ -42,7 +41,7 @@ jobs:
           context: src
           build-args: |
             BWS_DL_ARCH=${{ env.BWS_DL_ARCH }}
-            ARCH=${{ env.ARCH }}
+            ARCH=${{ matrix.platform }}
           tags: |
             bojanraic/bwsm-eso:nightly
 
