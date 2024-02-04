@@ -1,7 +1,11 @@
 {
-    "logger": { "level": "info" },
-    "server": { "port": 8080, "defaultMessage": "Bitwarden Secrets Manager ESO Wrapper", "express": { "json": { "config": { "limit": "50mb" } } }},
-    "middleware": { 
-        "swagger": { "disable": true, "path": "/docs"}
-    }
+  "logger": { "level": "info" },
+  "server": {
+    "port": 8080,
+    "defaultMessage": "Bitwarden Secrets Manager ESO Wrapper",
+    "express": { "json": { "config": { "limit": "1mb" } } }
+  },
+  "middleware": {
+    "swagger": { "disable": true, "path": "/docs" }
+  }
 }

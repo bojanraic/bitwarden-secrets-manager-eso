@@ -1,6 +1,4 @@
-// cmdRunner.js
-
-import { exec } from 'child_process';
+import { exec } from "child_process";
 
 /**
  * Run an arbitrary command line command and return the string output.

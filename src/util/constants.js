@@ -5,7 +5,8 @@ const constants = {
         SERVER_PORT: 8080, 
         CONFIG_FILE_PATH: "./util/config.json",
         OAS_FILE_PATH: "./api/spec.yaml", 
-        EXPRESS_JSON_CONFIG:  { "limit": "50mb" }
+        EXPRESS_JSON_CONFIG:  { "limit": "1mb" }, 
+        DEFAULT_MESSAGE: "Bitwarden Secrets Manager ESO Wrapper"
     }
 }
 

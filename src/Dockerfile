@@ -7,14 +7,11 @@ ARG BWS_VERSION=0.4.0 \
 FROM cgr.dev/chainguard/node-lts as base
 ARG WORKDIR BWS_DL_ARCH
 WORKDIR $WORKDIR
-COPY . .
+COPY . ./
 ENV NODE_ENV=$NODE_ENV \
     PORT=$PORT \
     BWS_ACCESS_TOKEN= 
-RUN npm ci && \
-    rm -rf node_modules/*/test && \
-    rm -rf node_modules/*/tests && \
-    rm -rf node_modules/.bin
+RUN npm ci --omit=dev
 
 FROM busybox:stable-uclibc as bws
 

@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.1
+    rev: v8.18.2
     hooks:
       - id: gitleaks
   - repo: https://github.com/norwoodj/helm-docs
@@ -8,6 +8,6 @@ repos:
     hooks:
       - id: helm-docs
   - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.23 
+    rev: v0.1.23
     hooks:
       - id: helmlint

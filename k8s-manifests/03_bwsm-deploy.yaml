@@ -35,7 +35,7 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          resources: 
+          resources:
             requests:
               cpu: 100m
               memory: 128Mi
@@ -79,10 +79,10 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
-    targetPort: http
-    protocol: TCP
-    name: http
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
     app.kubernetes.io/name: bwsm-eso
     app.kubernetes.io/instance: bwsm-eso
@@ -98,7 +98,7 @@ spec:
       app.kubernetes.io/instance: bwsm-eso
       app.kubernetes.io/name: bwsm-eso
   ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: external-secrets
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: external-secrets

@@ -19,18 +19,13 @@ const deploy = async () => {
         const defaultConfigPath = constants.defaults.CONFIG_FILE_PATH;
 
         const configPath = process.env.CONFIG_FILE_PATH || defaultConfigPath;
-        console.log(`[${new Date().toISOString()}] CONFIG_FILE_PATH environment variable: ${process.env.CONFIG_FILE_PATH}`);
-        console.log(`[${new Date().toISOString()}] Resolved config file path: ${configPath}`);
-        if (configPath === defaultConfigPath) {
-            console.warn(`[${new Date().toISOString()}] Warning: Using default config file path. Consider setting the CONFIG_FILE_PATH environment variable.`);
-        }
         const config = await readAndParseConfig(configPath);
         config.oasFile = constants.defaults.OAS_FILE_PATH;
         const serverPort = config?.server?.port || constants.defaults.SERVER_PORT
         const app = express();
         app.use(express.json(config?.server?.express?.json?.config || constants.defaults.EXPRESS_JSON_CONFIG ));
         app.get('/', (req, res) => {
-            res.send({"url": req.originalUrl, "message": config.server.defaultMessage || "Bitwarden Secrets Manager ESO Wrapper"});
+            res.send({"url": req.originalUrl, "message": config.server.defaultMessage || constants.defaults.DEFAULT_MESSAGE});
         });
         initialize(app, config).then(() => {
             http.createServer(app).listen(serverPort, () => {

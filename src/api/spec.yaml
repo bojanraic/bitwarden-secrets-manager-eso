@@ -3,7 +3,7 @@ info:
   title: Swagger Bitwarden Secrets Manager - OpenAPI 3.0
   description: >-
     This is a Bitwarden Secrets Manager CLI Wrapper Server based on the OpenAPI 3.0
-    specification. You can find out more about Bitwarden Secrets Manager [here](https://bitwarden.com/products/secrets-manager/). 
+    specification. You can find out more about Bitwarden Secrets Manager [here](https://bitwarden.com/products/secrets-manager/).
   contact:
     email: code@bojan.io
   license:
@@ -16,7 +16,7 @@ externalDocs:
 servers:
   - url: /
 paths:
-  '/secret/{id}':
+  "/secret/{id}":
     get:
       summary: Find Secret by ID
       description: Returns a single secret
@@ -32,15 +32,15 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Secret'  # Reference a common schema
-        '400':
+                $ref: "#/components/schemas/Secret" # Reference a common schema
+        "400":
           description: Invalid ID supplied
-        '404':
+        "404":
           description: Secret not found
       x-swagger-router-controller: secretController
 
@@ -62,7 +62,7 @@ components:
           type: string
         value:
           type: string
-        note: 
+        note:
           type: string
         creationDate:
           type: string
@@ -70,7 +70,7 @@ components:
         revisionDate:
           type: string
           format: date-time
-      example:  # Example specific to secrets
+      example: # Example specific to secrets
         organizationId: ffeeddcc-cccc-bbbb-aaaa-b0b300fa2aaa
         id: aaabbbcc-dddd-eeee-ffff-b0f600e0af3f
         projectId: aaaabbbb-cccc-dddd-eeee-000011112222
