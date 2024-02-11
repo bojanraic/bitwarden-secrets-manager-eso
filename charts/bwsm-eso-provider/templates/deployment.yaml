@@ -52,6 +52,9 @@ spec:
               command:
                 - wget
                 - -q
+                - --spider 
+                - -O
+                - /dev/null
                 - http://127.0.0.1:{{ .Values.service.port }}/
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}

@@ -7,7 +7,7 @@ ARG BWS_VERSION=0.4.0 \
 FROM cgr.dev/chainguard/node-lts as base
 ARG WORKDIR BWS_DL_ARCH
 WORKDIR $WORKDIR
-COPY . ./
+COPY . .
 ENV NODE_ENV=$NODE_ENV \
     PORT=$PORT \
     BWS_ACCESS_TOKEN= 
