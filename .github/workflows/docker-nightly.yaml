@@ -8,10 +8,11 @@ on:
 jobs:
   docker-image-build:
     environment: 'dockerhub'
+    env:
+      DOCKER_IMAGE_NAME: bojanraic/bwsm-eso
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_PAT: ${{ secrets.DOCKERHUB_PAT }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [amd64, arm64]    
     steps:
       - name: Code Checkout
         uses: actions/checkout@v4
@@ -19,31 +20,57 @@ jobs:
       - name: Dockerhub Login
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PAT }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_PAT }}
 
-      - name: ARM64 QEMU Setup
-        if: matrix.platform == 'arm64'
+      - name: QEMU Setup
         uses: docker/setup-qemu-action@v3
-
+      
       - name: Docker Buildx Setup
         uses: docker/setup-buildx-action@v3
 
-      - name: Architecture specific Environment Variable Setup
-        run: |
-          echo "BWS_DL_ARCH=$(if [ '${{ matrix.platform }}' == 'amd64' ]; then echo 'x86_64'; else echo 'aarch64'; fi)" >> $GITHUB_ENV
-
-      - name: Nighhly Build/Push From Default Branch
+      - name: Build Nightly amd64 image
         uses: docker/build-push-action@v5
         with:
-          push: true
-          platforms: linux/amd64, linux/arm64
           context: src
+          push: true
+          provenance: false
+          platforms: linux/amd64
           build-args: |
-            BWS_DL_ARCH=${{ env.BWS_DL_ARCH }}
-            ARCH=${{ matrix.platform }}
-          tags: |
-            bojanraic/bwsm-eso:nightly
+            BWS_DL_ARCH=x86_64
+          tags: ${{ env.DOCKER_IMAGE_NAME }}:nightly-amd64
+
+      - name: Build Nightly arm64 image
+        uses: docker/build-push-action@v5
+        with:
+          context: src
+          push: true
+          provenance: false
+          platforms: linux/arm64
+          build-args: |
+            BWS_DL_ARCH=aarch64
+          tags: ${{ env.DOCKER_IMAGE_NAME }}:nightly-arm64
+
+
+      - name: Push Multiplatform Nightly Image Manifest
+        uses: Noelware/docker-manifest-action@master
+        with:
+          inputs: ${{ env.DOCKER_IMAGE_NAME }}:nightly
+          images: ${{ env.DOCKER_IMAGE_NAME }}:nightly-amd64,${{ env.DOCKER_IMAGE_NAME }}:nightly-arm64
+          push: true
+
+      - name: Cleanup Internediate Nightly Platform-Specific Images
+        run: | 
+          REPO=${{ env.DOCKER_IMAGE_NAME }}
+          DH_USER=${{ env.DOCKERHUB_USERNAME }}
+          DH_PASS=${{ env.DOCKERHUB_PAT }}
+          JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
+
+          TAG=nightly-arm64
+          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
+          
+          TAG=nightly-amd64
+          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
 
       - name: Most Recent Semver Tag
         uses: actions-ecosystem/action-get-latest-tag@v1
@@ -55,15 +82,44 @@ jobs:
         if: steps.most-recent-tag.outputs.tag
         run: git checkout ${{ steps.most-recent-tag.outputs.tag }}
 
-      - name: Scheduled Tag Build/Push
+      - name: Build Tagged amd64 image
         uses: docker/build-push-action@v5
         with:
-          push: true
-          platforms: linux/amd64, linux/arm64
           context: src
+          push: true
+          provenance: false
+          platforms: linux/amd64
           build-args: |
-            BWS_DL_ARCH=${{ env.BWS_DL_ARCH }}
-            ARCH=${{ matrix.platform }}
-          tags: |
-            bojanraic/bwsm-eso:${{ steps.most-recent-tag.outputs.tag }}
-            bojanraic/bwsm-eso:latest
+            BWS_DL_ARCH=x86_64
+          tags: ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}-amd64, ${{ env.DOCKER_IMAGE_NAME }}:latest-amd64
+
+      - name: Build Tagged arm64 image
+        uses: docker/build-push-action@v5
+        with:
+          context: src
+          push: true
+          provenance: false
+          platforms: linux/arm64
+          build-args: |
+            BWS_DL_ARCH=aarch64
+          tags: ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}-arm64, ${{ env.DOCKER_IMAGE_NAME }}:latest-arm64
+
+      - name: Push Multiplatform Tagged Image Manifest
+        uses: Noelware/docker-manifest-action@master
+        with:
+          inputs: ${{ env.DOCKER_IMAGE_NAME }}:latest, ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}
+          images: ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}-amd64,  ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}-arm64
+          push: true
+
+      - name: Cleanup Internediate Tagged Platform-Specific Images
+        run: | 
+          REPO=${{ env.DOCKER_IMAGE_NAME }}
+          DH_USER=${{ env.DOCKERHUB_USERNAME }}
+          DH_PASS=${{ env.DOCKERHUB_PAT }}
+          JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
+
+          TAG=${{ steps.most-recent-tag.outputs.tag }}-amd64
+          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
+          
+          TAG=${{ steps.most-recent-tag.outputs.tag }}-amd64
+          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"

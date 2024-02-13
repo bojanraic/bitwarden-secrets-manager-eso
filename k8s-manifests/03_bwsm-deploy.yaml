@@ -47,6 +47,9 @@ spec:
               command:
                 - wget
                 - -q
+                - --spider 
+                - -O
+                - /dev/null
                 - http://127.0.0.1:8080/
             initialDelaySeconds: 10
             failureThreshold: 3

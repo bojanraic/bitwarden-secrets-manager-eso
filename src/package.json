@@ -1,6 +1,6 @@
 {
     "name": "bwsm-eso",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "This is a Bitwarden Secrets Manager ESO wrapper based on the OpenAPI 3.0 specification.",
     "license": "AGPL-3.0-only",
     "type": "module",
@@ -13,8 +13,12 @@
     "scripts": {
         "prestart": "npm install --only=prod",
         "start": "node index.js",
-        "build-docker": "docker build --no-cache . -t bojanraic/bwsm-eso:latest", 
-        "start-docker": "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN docker run --rm -e BWS_ACCESS_TOKEN -p 8080:8080 bojanraic/bwsm-eso:latest"
+        "build-docker": "docker build --no-cache --platform linux/amd64 . -t bwsm-eso:latest",
+        "build-docker-arm": "docker build --no-cache --platform linux/arm64 --build-arg BWS_DL_ARCH=aarch64 . -t bwsm-eso:latest",
+        "start-docker": "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN docker run --platform linux/amd64 --rm --name bwsm-eso -e BWS_ACCESS_TOKEN -p 8080:8080 bwsm-eso:latest",
+        "start-docker-arm": "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN docker run --platform linux/arm64 --rm --name bwsm-eso-arm -e BWS_ACCESS_TOKEN -p 8080:8080 bwsm-eso:latest",
+        "docker": "npm run build-docker && npm run start-docker",
+        "docker-arm": "npm run build-docker-arm && npm run start-docker-arm"
     },
     "dependencies": {
         "@oas-tools/core": "^3.1.0",
