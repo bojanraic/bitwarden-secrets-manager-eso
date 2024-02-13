@@ -33,7 +33,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: src
-          file: Dockerfile
           push: true
           provenance: false
           platforms: linux/amd64
@@ -45,7 +44,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: src
-          file: Dockerfile
           push: true
           provenance: false
           platforms: linux/arm64
@@ -88,7 +86,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: src
-          file: Dockerfile
           push: true
           provenance: false
           platforms: linux/amd64
@@ -100,7 +97,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: src
-          file: Dockerfile
           push: true
           provenance: false
           platforms: linux/arm64
