@@ -2,7 +2,9 @@ name: Deploy GH Pages
 
 on:
   release:
-    types: [published]
+    types: 
+      - published
+      - created
     paths:
       - README.md
       - charts/**/README.md
