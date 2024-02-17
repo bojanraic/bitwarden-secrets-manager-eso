@@ -1,6 +1,6 @@
 {
     "name": "bwsm-eso",
-    "version": "0.0.9",
+    "version": "0.1.0-beta",
     "description": "This is a Bitwarden Secrets Manager ESO wrapper based on the OpenAPI 3.0 specification.",
     "license": "AGPL-3.0-only",
     "type": "module",

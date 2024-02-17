@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import { initialize } from "@oas-tools/core";
 import constants from "./util/constants.js";
 
+// Function to read and parse JSON file
 async function readAndParse(filePath) {
     try {
         const configFileContent = await fs.readFile(filePath, 'utf8');
@@ -14,38 +15,36 @@ async function readAndParse(filePath) {
     }
 }
 
+// Deploy function to start the server
 const deploy = async () => {
     try {
-        // application name and version
+        // Read package.json for application name and version
         const packageJSON = await readAndParse('./package.json');
-        const appName = packageJSON.name; 
-        const appVersion = packageJSON.version;
+        const { name: appName, version: appVersion } = packageJSON;
 
-        // application configuration
-        const defaultConfigPath = constants.defaults.CONFIG_FILE_PATH;
-        const configPath = process.env.CONFIG_FILE_PATH || defaultConfigPath;
-        const config = await readAndParse(configPath);
-        const serverPort = config?.server?.port || constants.defaults.SERVER_PORT;
-        const appMessage = config.server.defaultMessage || constants.defaults.DEFAULT_MESSAGE;
-        config.oasFile = constants.defaults.OAS_FILE_PATH;
+        // Extract server configuration
+        const serverPort = constants.config?.server?.port || constants.defaults.SERVER_PORT;
+        const appMessage = constants.config?.server?.defaultMessage || constants.defaults.DEFAULT_MESSAGE;
+        constants.config.oasFile = constants.defaults.OAS_FILE_PATH;
 
-        // application setup
+        // Setup Express application
         const app = express();
-        app.use(express.json(config?.server?.express?.json?.config || constants.defaults.EXPRESS_JSON_CONFIG));
+        app.use(express.json(constants.config?.server?.express?.json?.config || constants.defaults.EXPRESS_JSON_CONFIG));
         app.get('/', (req, res) => {
-            res.send({ "name": appName, "version": appVersion, "url": req.originalUrl, "message": appMessage });
+            res.send({ name: appName, version: appVersion, url: req.originalUrl, message: appMessage });
         });
 
-        // application initialization
-        initialize(app, config).then(() => {
-            http.createServer(app).listen(serverPort, () => {
-                console.log(`\n[${appName} v${appVersion}] Running at http://localhost:${serverPort}`);
+        // Initialize application
+        await initialize(app, constants.config);
+
+        // Start HTTP server
+        http.createServer(app).listen(serverPort, () => {
+            console.log(`\n[${appName} v${appVersion}] Running at http://localhost:${serverPort}`);
+            console.log(`________________________________________________________________`);
+            if (!constants.config?.middleware?.swagger?.disable) {
+                console.log(`API docs (Swagger UI) available on http://localhost:${serverPort}/docs`);
                 console.log(`________________________________________________________________`);
-                if (!config?.middleware?.swagger?.disable) {
-                    console.log(`API docs (Swagger UI) available on http://localhost:${serverPort}/docs`);
-                    console.log(`________________________________________________________________`);
-                }
-            });
+            }
         });
     } catch (error) {
         console.error(`Error during deployment: ${error.message}`);
@@ -53,8 +52,9 @@ const deploy = async () => {
     }
 }
 
+// Function to gracefully shutdown the server
 const undeploy = () => {
     process.exit();
 };
 
-export default { deploy, undeploy }
+export default { deploy, undeploy };

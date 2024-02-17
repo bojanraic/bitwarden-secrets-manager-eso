@@ -1,10 +1,9 @@
 name: Deploy GH Pages
 
 on:
-  release:
-    types: 
-      - published
-      - created
+  push:
+    tags: 
+      - 'bwsm-eso-provider-*'
     paths:
       - README.md
       - charts/**/README.md

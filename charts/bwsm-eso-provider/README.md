@@ -1,6 +1,6 @@
 # bwsm-eso-provider
 
-![Version: 0.0.9](https://img.shields.io/badge/Version-0.0.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.0.9](https://img.shields.io/badge/AppVersion-0.0.9-informational?style=flat-square)
+![Version: 0.1.0-beta](https://img.shields.io/badge/Version-0.1.0--beta-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0-beta](https://img.shields.io/badge/AppVersion-0.1.0--beta-informational?style=flat-square)
 
 Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider for External Secrets Operator (ESO)
 
@@ -23,6 +23,8 @@ Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider for External S
 | bwsm_eso_provider.auth.existingSecret | string | `""` | use an existing secret for bitwarden secrets manager credentials; ignores above credentials if this is set |
 | bwsm_eso_provider.auth.secretKeys.accessToken | string | `"BWS_ACCESS_TOKEN"` | secret key for bitwarden secrets manager access token to use to authenticate BWS CLI and fetch secrets in the pod; do not change unless customizing the Express.JS wrapper code |
 | bwsm_eso_provider.create_cluster_secret_store | bool | `true` | if set to True, we'll create a cluster-wide Cluster Secret Store see: https://external-secrets.io/latest/introduction/overview/#clustersecretstore |
+| bwsm_eso_provider.eso_namespace | string | `"external-secrets"` | specify namespace where ESO is installed |
+| bwsm_eso_provider.network_policy.cilium | bool | `false` | if Cilium is used (for creating a CiliumNetworkPolicy) |
 | bwsm_eso_provider.network_policy.enabled | bool | `true` | enable a network policy between BWSM pod(s) and ESO namespace; highly recommended as the Express.js App provides no authentication |
 | bwsm_eso_provider.network_policy.labels | object | `{"app.kubernetes.io/name":"external-secrets"}` | specify the labels to match against for the network policy |
 | bwsm_eso_provider.sample_secret.create | bool | `false` | create a sample external secret for quick verification; works only when create_cluster_secret_store is True |

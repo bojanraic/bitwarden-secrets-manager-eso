@@ -6,6 +6,8 @@ bwsm_eso_provider:
   # -- if set to True, we'll create a cluster-wide Cluster Secret Store
   # see: https://external-secrets.io/latest/introduction/overview/#clustersecretstore
   create_cluster_secret_store: true
+  # -- specify namespace where ESO is installed
+  eso_namespace: external-secrets  
   auth:
     # -- bitwarden secrets manager access token to use to authenticate BWS CLI and fetch secrets in the pod; ignored if existingSecret is set
     accessToken: ""
@@ -32,7 +34,8 @@ bwsm_eso_provider:
     # -- specify the labels to match against for the network policy
     labels:
       app.kubernetes.io/name: external-secrets
-
+    # -- if Cilium is used (for creating a CiliumNetworkPolicy)
+    cilium: false
 # -- number of replicas to deploy
 replicaCount: 1
 

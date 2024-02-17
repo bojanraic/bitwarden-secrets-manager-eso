@@ -1,18 +1,50 @@
-{{- if .Values.bwsm_eso_provider.network_policy.enabled }}
+{{- if and .Values.bwsm_eso_provider.network_policy.enabled (not .Values.bwsm_eso_provider.network_policy.cilium) }}
 ---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: external-secrets-operator-ns-to-{{ .Release.Name }}-policy
+  name: eso-ns-to-{{ .Release.Name }}-policy
   namespace: {{ .Release.Namespace }}
 spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/name: {{ .Release.Name }}
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
   ingress:
     - from:
-      - namespaceSelector:
-          matchLabels:
+        - namespaceSelector:
+            matchExpressions:
+              - key: namespace
+                operator: In
+                values:
+                  - {{ .Values.bwsm_eso_provider.eso_namespace }}
+      ports:
+        - port: 8080
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+            {{ toYaml .Values.bwsm_eso_provider.network_policy.labels | indent 2 }}
+{{- end }}
+{{- if and .Values.bwsm_eso_provider.network_policy.enabled .Values.bwsm_eso_provider.network_policy.cilium }}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: eso-ns-to-{{ .Release.Name }}-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: {{ .Values.bwsm_eso_provider.eso_namespace }}
+      toPorts:
+        - ports:
+            - port: "8080"
+  egress:
+    - toEndpoints:
+        - matchLabels:
           {{ toYaml .Values.bwsm_eso_provider.network_policy.labels | indent 2 }}
+
 {{- end }}

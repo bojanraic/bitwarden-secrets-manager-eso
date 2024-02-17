@@ -32,7 +32,6 @@ WORKDIR $WORKDIR
 
 COPY --from=base $WORKDIR/ $WORKDIR/
 COPY --from=bws /bin/sh /bin/sh
-COPY --from=bws /bin/wget /bin/wget
 COPY --from=bws $WORKDIR/bws $WORKDIR/bws
 
 EXPOSE $PORT

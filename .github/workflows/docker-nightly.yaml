@@ -59,19 +59,6 @@ jobs:
           images: ${{ env.DOCKER_IMAGE_NAME }}:nightly-amd64,${{ env.DOCKER_IMAGE_NAME }}:nightly-arm64
           push: true
 
-      - name: Cleanup Internediate Nightly Platform-Specific Images
-        run: | 
-          REPO=${{ env.DOCKER_IMAGE_NAME }}
-          DH_USER=${{ env.DOCKERHUB_USERNAME }}
-          DH_PASS=${{ env.DOCKERHUB_PAT }}
-          JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
-
-          TAG=nightly-arm64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
-          
-          TAG=nightly-amd64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
-
       - name: Most Recent Semver Tag
         uses: actions-ecosystem/action-get-latest-tag@v1
         with:
@@ -111,15 +98,16 @@ jobs:
           images: ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}-amd64,  ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.most-recent-tag.outputs.tag }}-arm64
           push: true
 
-      - name: Cleanup Internediate Tagged Platform-Specific Images
+      - name: Cleanup Internediate Images
         run: | 
           REPO=${{ env.DOCKER_IMAGE_NAME }}
           DH_USER=${{ env.DOCKERHUB_USERNAME }}
           DH_PASS=${{ env.DOCKERHUB_PAT }}
           JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
+          tags=$(curl -L -s 'https://hub.docker.com/v2/repositories/${REPO}/tags?page_size=`1024`' | jq -r '.results[].name' | grep -E '\-arm64|\-amd64')
 
-          TAG=${{ steps.most-recent-tag.outputs.tag }}-amd64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
-          
-          TAG=${{ steps.most-recent-tag.outputs.tag }}-amd64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
+          # Iterate over tags
+          for tag in $tags; do
+              echo "Deleting intermediate tag: $tag"
+              curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${tag}/" -X DELETE -H "Authorization: JWT ${JWT}"
+          done

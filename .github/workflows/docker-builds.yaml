@@ -75,21 +75,6 @@ jobs:
           images: ${{ env.DOCKER_IMAGE_NAME }}:${{ inputs.image_tag }}-amd64,  ${{ env.DOCKER_IMAGE_NAME }}:${{ inputs.image_tag }}-arm64
           push: true
 
-      - name: Cleanup Internediate Manual Platform-Specific Images
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: | 
-          REPO=${{ env.DOCKER_IMAGE_NAME }}
-          DH_USER=${{ env.DOCKERHUB_USERNAME }}
-          DH_PASS=${{ env.DOCKERHUB_PAT }}
-          JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
-
-          TAG=${{ inputs.image_tag }}-arm64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
-          
-          TAG=${{ inputs.image_tag }}-amd64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
-
-
       - name: Tagged Build/Push - amd64
         if: ${{ github.event_name != 'workflow_dispatch' }}
         uses: docker/build-push-action@v5
@@ -131,16 +116,16 @@ jobs:
           images: ${{ env.DOCKER_IMAGE_NAME }}:${{ github.ref_name }}-amd64,  ${{ env.DOCKER_IMAGE_NAME }}:${{ github.ref_name }}-arm64
           push: true
 
-      - name: Cleanup Internediate Tagged Platform-Specific Images
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+      - name: Cleanup Internediate Images
         run: | 
           REPO=${{ env.DOCKER_IMAGE_NAME }}
           DH_USER=${{ env.DOCKERHUB_USERNAME }}
           DH_PASS=${{ env.DOCKERHUB_PAT }}
           JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
+          tags=$(curl -L -s 'https://hub.docker.com/v2/repositories/${REPO}/tags?page_size=1024' | jq -r '.results[].name' | grep -E '\-arm64|\-amd64')
 
-          TAG=${{ github.ref_name }}-amd64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
-          
-          TAG=${{ github.ref_name }}-arm64
-          curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/" -X DELETE -H "Authorization: JWT ${JWT}"
+          # Iterate over tags
+          for tag in $tags; do
+              echo "Deleting intermediate tag: $tag"
+              curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${tag}/" -X DELETE -H "Authorization: JWT ${JWT}"
+          done

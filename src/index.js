@@ -1,27 +1,39 @@
 import server from "./server.js";
 
-const env = process.env.NODE_ENV ? process.env.NODE_ENV : "production";
+const env = process.env.NODE_ENV || "production"; // Use a default value if NODE_ENV is not set
 
-server.deploy(env).catch((err) => {
-  console.log(err);
+// Start the server
+async function startServer() {
+    try {
+        await server.deploy(env);
+        console.log(`Server deployed successfully in ${env} mode.`);
+    } catch (error) {
+        console.error(`Error deploying server: ${error}`);
+        process.exit(1);
+    }
+}
+
+startServer();
+
+// Graceful shutdown on SIGINT (Ctrl+C) or SIGTERM (docker container stop)
+process.on("SIGINT", () => {
+    console.log(`[${new Date().toISOString()}] Got SIGINT (Ctrl+C). Graceful shutdown.`);
+    shutdown();
 });
 
-// quit on ctrl-c when running docker in terminal
-process.on("SIGINT", function onSigint() {
-  console.log(
-    `[${new Date().toISOString()}] Got SIGINT (aka ctrl-c in docker). Graceful shutdown`
-  );
-  shutdown();
+process.on("SIGTERM", () => {
+    console.log(`[${new Date().toISOString()}] Got SIGTERM (docker container stop). Graceful shutdown.`);
+    shutdown();
 });
 
-// quit properly on docker stop
-process.on("SIGTERM", function onSigterm() {
-  console.log(
-    `[${new Date().toISOString()}] Got SIGTERM (docker container stop). Graceful shutdown`
-  );
-  shutdown();
-});
-
-const shutdown = () => {
-  server.undeploy();
-};
+// Function to gracefully shutdown the server
+async function shutdown() {
+    try {
+        server.undeploy();
+        console.log("Server shutdown completed.");
+        process.exit(0);
+    } catch (error) {
+        console.error(`Error during server shutdown: ${error}`);
+        process.exit(1);
+    }
+}
