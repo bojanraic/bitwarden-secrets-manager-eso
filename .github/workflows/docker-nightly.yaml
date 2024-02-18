@@ -104,10 +104,10 @@ jobs:
           DH_USER=${{ env.DOCKERHUB_USERNAME }}
           DH_PASS=${{ env.DOCKERHUB_PAT }}
           JWT=$(curl -s -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"username\":\"${DH_USER}\",\"password\":\"${DH_PASS}\"}" -L 'https://hub.docker.com/v2/users/login' | jq -r '.token')
-          tags=$(curl -L -s 'https://hub.docker.com/v2/repositories/${REPO}/tags?page_size=`1024`' | jq -r '.results[].name' | grep -E '\-arm64|\-amd64')
+          tags=$(curl -s -L "https://hub.docker.com/v2/repositories/${REPO}/tags?page_size=1024" | jq -r ".results[].name" | grep -E "\-arm64|\-amd64")
 
           # Iterate over tags
           for tag in $tags; do
               echo "Deleting intermediate tag: $tag"
-              curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${tag}/" -X DELETE -H "Authorization: JWT ${JWT}"
+              curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags/${tag}" -X DELETE -H "Authorization: JWT ${JWT}"
           done
