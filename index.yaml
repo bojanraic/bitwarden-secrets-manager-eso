@@ -18,38 +18,6 @@ entries:
     - https://github.com/bojanraic/bitwarden-secrets-manager-eso/releases/download/bwsm-eso-provider-0.1.0/bwsm-eso-provider-0.1.0.tgz
     version: 0.1.0
   - apiVersion: v2
-    appVersion: 0.1.0
-    created: "2024-03-03T18:31:55.917035339Z"
-    description: Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider
-      for External Secrets Operator (ESO)
-    digest: 5f905c45e0a5c1ea19cf984fa1579ba709a95e722b4b7483c8847df93f82417c
-    icon: https://bojanraic.github.io/bitwarden-secrets-manager-eso/chart-icon.png
-    maintainers:
-    - email: code@bojan.io
-      name: Bojan Raic
-      url: https://github.com/bojanraic
-    name: bwsm-eso-provider
-    type: application
-    urls:
-    - https://github.com/bojanraic/bitwarden-secrets-manager-eso/releases/download/bwsm-eso-provider-0.1.0-beta2/bwsm-eso-provider-0.1.0-beta2.tgz
-    version: 0.1.0-beta2
-  - apiVersion: v2
-    appVersion: 0.1.0-beta
-    created: "2024-02-17T15:05:40.197607369Z"
-    description: Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider
-      for External Secrets Operator (ESO)
-    digest: eef43eb1d8df15262ecb93119bbfae93b35eb01e7389985d1a948202f9024225
-    icon: https://bojanraic.github.io/bitwarden-secrets-manager-eso/chart-icon.png
-    maintainers:
-    - email: code@bojan.io
-      name: Bojan Raic
-      url: https://github.com/bojanraic
-    name: bwsm-eso-provider
-    type: application
-    urls:
-    - https://github.com/bojanraic/bitwarden-secrets-manager-eso/releases/download/bwsm-eso-provider-0.1.0-beta/bwsm-eso-provider-0.1.0-beta.tgz
-    version: 0.1.0-beta
-  - apiVersion: v2
     appVersion: 0.0.9
     created: "2024-02-16T13:11:52.088914134Z"
     description: Helm chart to use Bitwarden Secrets Manaager (BWSM) as a Provider
