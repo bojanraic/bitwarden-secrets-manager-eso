@@ -33,6 +33,13 @@ const deploy = async () => {
         app.get('/', (req, res) => {
             res.send({ name: appName, version: appVersion, url: req.originalUrl, message: appMessage });
         });
+        app.use((req, res, next) => {
+            if (req.url === '/favicon.ico') {
+              res.status(204).end();
+            } else {
+              next();
+            }
+        });
 
         // Initialize application
         await initialize(app, constants.config);

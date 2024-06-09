@@ -6,6 +6,7 @@ import { exec } from "child_process";
  * @returns {Promise<string>} A Promise that resolves with the command output.
  */
 export function runCommand(command) {
+  console.log(`BWS API: Run CLI: ${command}`);
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {
