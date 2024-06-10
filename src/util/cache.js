@@ -3,6 +3,7 @@ import zlib from 'node:zlib';
 let cache = {
   secret: null,
   project: null,
+  projectSecrets: {}
 };
 
 function compress(json) {

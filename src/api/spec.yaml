@@ -13,7 +13,7 @@ externalDocs:
   description: Bitwarden Secrets Manager CLI Docs
   url: https://bitwarden.com/help/secrets-manager-cli/
 servers:
-- url: /
+  - url: /
 paths:
   "/{type}":
     get:
@@ -21,28 +21,35 @@ paths:
       description: Returns a single BWS entity with specified ID or name
       operationId: getByIdOrName
       parameters:
-      - name: type
-        in: path
-        description: Type of BWS entity
-        required: true
-        schema:
-          type: string
-          enum:
-          - "secret"
-          - "project"
-      - name: id
-        in: query
-        description: ID of the BWS entity to return
-        required: false
-        schema:
-          type: string
-          format: uuid
-      - name: name
-        in: query
-        description: Name of the BWS entity to return
-        required: false
-        schema:
-          type: string
+        - name: type
+          in: path
+          description: Type of BWS entity
+          required: true
+          schema:
+            type: string
+            enum:
+              - "secret"
+              - "project"
+        - name: id
+          in: query
+          description: ID of the BWS entity to return
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: projectId
+          in: query
+          description: Project ID of the BWS entity to return
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: name
+          in: query
+          description: Name of the BWS entity to return
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Successful operation for {entity}
@@ -50,8 +57,8 @@ paths:
             application/json:
               schema:
                 anyOf:
-                - $ref: "#/components/schemas/Secret"
-                - $ref: "#/components/schemas/Project"
+                  - $ref: "#/components/schemas/Secret"
+                  - $ref: "#/components/schemas/Project"
         "400":
           description: Invalid ID or name for BWS {entity} supplied
         "404":
@@ -76,47 +83,47 @@ components:
           format: date-time
     Secret:
       allOf:
-      - $ref: '#/components/schemas/Entity'
-      - type: object
-        properties:
-          projectId:
-            type: string
-            format: uuid
-          key:
-            type: string
-          value:
-            type: string
-          note:
-            type: string
-          type:
-            type: string
-            enum:
-            - secret
-        example:
-          organizationId: ffeeddcc-cccc-bbbb-aaaa-b0b300fa2aaa
-          id: aaabbbcc-dddd-eeee-ffff-b0f600e0af3f
-          projectId: aaaabbbb-cccc-dddd-eeee-000011112222
-          value: Bitwarden Secrets Manager
-          key: name
-          note: This secret represents the name of the secrets manager product in use
-          creationDate: 2024-01-13T13:38:03.078879200Z
-          revisionDate: 2024-01-14T17:59:13.548055Z
-          type: secret
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          properties:
+            projectId:
+              type: string
+              format: uuid
+            key:
+              type: string
+            value:
+              type: string
+            note:
+              type: string
+            type:
+              type: string
+              enum:
+                - secret
+          example:
+            organizationId: ffeeddcc-cccc-bbbb-aaaa-b0b300fa2aaa
+            id: aaabbbcc-dddd-eeee-ffff-b0f600e0af3f
+            projectId: aaaabbbb-cccc-dddd-eeee-000011112222
+            value: Bitwarden Secrets Manager
+            key: name
+            note: This secret represents the name of the secrets manager product in use
+            creationDate: 2024-01-13T13:38:03.078879200Z
+            revisionDate: 2024-01-14T17:59:13.548055Z
+            type: secret
     Project:
       allOf:
-      - $ref: '#/components/schemas/Entity'
-      - type: object
-        properties:
-          name:
-            type: string
-          type:
-            type: string
-            enum:
-            - project
-        example:
-          id: aaaabbbb-cccc-dddd-eeee-000011112222
-          organizationId: ddddeeee-ffff-aaaa-bbbb-000011112222
-          name: my-project
-          creationDate: 2023-01-11T15:29:58.840517600Z
-          revisionDate: 2023-02-01T17:18:38.292150300Z
-          type: secret
+        - $ref: "#/components/schemas/Entity"
+        - type: object
+          properties:
+            name:
+              type: string
+            type:
+              type: string
+              enum:
+                - project
+          example:
+            id: aaaabbbb-cccc-dddd-eeee-000011112222
+            organizationId: ddddeeee-ffff-aaaa-bbbb-000011112222
+            name: my-project
+            creationDate: 2023-01-11T15:29:58.840517600Z
+            revisionDate: 2023-02-01T17:18:38.292150300Z
+            type: secret
