@@ -1,4 +1,5 @@
 import { exec } from "child_process";
+import { constants } from "../util/constants.js";
 
 /**
  * Run an arbitrary command line command and return the string output.
@@ -6,19 +7,17 @@ import { exec } from "child_process";
  * @returns {Promise<string>} A Promise that resolves with the command output.
  */
 export function runCommand(command) {
-  console.log(`BWS API: Run CLI: ${command}`);
+  console.log(`${constants.LOG_TAG}: Run CLI: ${command}`);
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {
         reject(error);
         return;
       }
-
       if (stderr) {
         reject(new Error(stderr));
         return;
-      }
-
+      } 
       resolve(JSON.parse(stdout.trim()));
     });
   });

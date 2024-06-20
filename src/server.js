@@ -2,7 +2,7 @@ import http from "http";
 import express from "express";
 import fs from "fs/promises";
 import { initialize } from "@oas-tools/core";
-import constants from "./util/constants.js";
+import { constants } from "./util/constants.js";
 
 // Function to read and parse JSON file
 async function readAndParse(filePath) {
