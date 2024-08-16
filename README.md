@@ -1,4 +1,12 @@
-## Bitwarden Secrets Manager (BWSM) Provider for External Secrets Operator (ESO)
+## Bitwarden Secrets Manager (BWSM) Provider for External Secrets Operator (ESO) - DEPRECATED
+⚠️📣 DEPRECATION NOTICE 📣⚠️
+
+ESO now officially supports Bitwarden Secrets Manager, use it instead: https://external-secrets.io/latest/provider/bitwarden-secrets-manager/
+
+This has served me well for my Homelab cluster, but there is no need to use or maintain it any longer. 
+
+⚠️📣 DEPRECATION NOTICE 📣⚠️
+
 <a href="https://github.com/bojanraic/bitwarden-secrets-manager-eso/releases"><img src="https://img.shields.io/github/v/release/bojanraic/bitwarden-secrets-manager-eso"></a>
 
 A simple Express.js server wrapper around Bitwarden Secrets Manager CLI ([BWS](https://bitwarden.com/help/secrets-manager-cli/)). 
